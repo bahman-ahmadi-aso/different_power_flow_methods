@@ -66,7 +66,7 @@ if Read_npy_data=='no':
 	Param=RD.read_act_react_DATA(Param)
 	save_Profiles='yes'
 	if save_Profiles=='yes':
-		RD.npy("data/time_series/Profiles",Param)
+		RD.Save_profiles_npy("data/time_series/Profiles",Param)
 else:
 	a=Param.day
 	Param.day=[1]
@@ -91,4 +91,4 @@ tic = time.time()
 Fitout, Vmg,Param = fobj(Param)
 toc=time.time()-tic
 print('Elapsed time for the power flow: ',toc)
-np.savetxt(os.path.join(Directory_name,folder_name,"Vmg.csv"), V[0], delimiter=",")
+np.savetxt(os.path.join(Directory_name,folder_name,"Vmg.csv"), Vmg[0], delimiter=",")

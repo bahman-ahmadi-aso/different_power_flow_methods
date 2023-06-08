@@ -9,19 +9,19 @@ def read_act_react_DATA(Param):
         dtd = datetime.strptime(str(dt[iiday-1]), '%Y-%m-%d %H:%M:%S').strftime('%Y-%m-%d')
         #load system data
         ##
-        df = pd.read_csv(os.path.join(Param.Directory_name,"data/time_series/active_power_scaled_oneyear15min.csv"))
+        df = pd.read_csv(os.path.join(Param.FD,"data/time_series/active_power_scaled_oneyear15min.csv"))
         df['date_time'] = pd.to_datetime(df['date_time'], format="%d/%m/%Y %H:%M")
         date_filter = df['date_time'].dt.date == pd.to_datetime(dtd).date()
         filtered_df = df[date_filter]
         active_power_time_series = filtered_df.iloc[:,1:].values#  1: neglect the first data (column) in csv file
         ##
-        df = pd.read_csv(os.path.join(Param.Directory_name,"data/time_series/reactive_power_scaled_oneyear15min.csv"))
+        df = pd.read_csv(os.path.join(Param.FD,"data/time_series/reactive_power_scaled_oneyear15min.csv"))
         df['date_time'] = pd.to_datetime(df['date_time'], format="%d/%m/%Y %H:%M")
         date_filter = df['date_time'].dt.date == pd.to_datetime(dtd).date()
         filtered_df = df[date_filter]
         reactive_power_time_series =filtered_df.iloc[:,1:].values# 
 
-        LoadData = pd.read_csv(os.path.join(Param.Directory_name,"data/grid_data/"+Param.TestSystem+".csv"),index_col=0,parse_dates=True)
+        LoadData = pd.read_csv(os.path.join(Param.FD,"data/grid_data/"+Param.TestSystem+".csv"),index_col=0,parse_dates=True)
         maxP=LoadData["PD"].values
         maxQ=LoadData["QD"].values
         SameLoadCurve="yes"
@@ -52,7 +52,7 @@ def read_act_react_DATA(Param):
         if withDG=='yes':
             #PV--WT
             ##
-            df1 = pd.read_csv(os.path.join(Param.Directory_name,"data/time_series/photovoltaic_oneyear15min.csv"))
+            df1 = pd.read_csv(os.path.join(Param.FD,"data/time_series/photovoltaic_oneyear15min.csv"))
             df1['date_time'] = pd.to_datetime(df1['date_time'], format="%d/%m/%Y %H:%M")
             date_filter = df1['date_time'].dt.date == pd.to_datetime(dtd).date()
             filtered_df = df1[date_filter]
@@ -60,7 +60,7 @@ def read_act_react_DATA(Param):
             PV1 = filtered_df.iloc[:,1:].values#pd.read_csv("data/time_series/test.csv",index_col=0,parse_dates=True).values.tolist()
             Param.PV=[PV1[t][0] for t in range(len(PV1))]
             ##
-            df = pd.read_csv(os.path.join(Param.Directory_name,"data/time_series/windturbine_oneyear15min.csv"))
+            df = pd.read_csv(os.path.join(Param.FD,"data/time_series/windturbine_oneyear15min.csv"))
             df['date_time'] = pd.to_datetime(df['date_time'], format="%d/%m/%Y %H:%M")
             date_filter = df['date_time'].dt.date == pd.to_datetime(dtd).date()
             filtered_df = df[date_filter]
@@ -104,7 +104,7 @@ def read_act_react_DATA(Param):
         
     return Param
 
-def npy(name,Param):
+def Save_profiles_npy(name,Param):
     PARAM={'actPower':Param.Profile_actP,
                 'reactPower':Param.Profile_actQ}
     np.save(name+'.npy', PARAM)

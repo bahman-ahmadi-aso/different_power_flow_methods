@@ -35,7 +35,7 @@ class SOL:
         self.alphaReact=[]
 
 
-        self.Directory_name=[]
+        self.FD=[]
 
         self.nTime=0
         self.nLoad=0
