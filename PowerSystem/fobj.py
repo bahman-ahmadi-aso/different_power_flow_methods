@@ -79,6 +79,9 @@ def fobj(Param):
     if Param.goal=='(v-1)^2':
         for iSA in range(len(Param.Profile_actP)):
             fit.append(np.sum((Vmg[iSA]-1))**2)
+    elif Param.goal=='abs(v-v_ref)':
+        for iSA in range(len(Param.Profile_actP)):
+            fit.append(np.sum(np.abs(np.add(Vmg[iSA],-1))))
     else:
         fit.append('None')
         print("NO OFs is selected")

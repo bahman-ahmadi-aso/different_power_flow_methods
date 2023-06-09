@@ -8,7 +8,7 @@ import sys,os,time,numpy as np,pandas as pd
 from datetime import datetime
 from PowerSystem.SOL import SOL 
 import data.ReadData as RD
-PFM=['Alliander']#,'Laurent','tensor','hp','sequential','hp-tensor','fbs','nr','fdxb','gs','dc']
+PFM=['Alliander','Laurent','tensor','hp','sequential','hp-tensor','fbs','nr','fdxb','gs','dc']
 SimTime=[]
 for iPFM in PFM:
 	Param=SOL()
@@ -71,7 +71,10 @@ for iPFM in PFM:
 		Param=RD.read_act_react_DATA(Param)
 		save_Profiles='yes'
 		if save_Profiles=='yes':
-			RD.Save_profiles_npy("data/time_series/Profiles_info1",Param)
+			if Param.profile_info==0:
+				RD.Save_profiles_npy("data/time_series/Profiles",Param)
+			else:
+				RD.Save_profiles_npy("data/time_series/Profiles_info1",Param)
 	else:
 		a=Param.day
 		Param.day=[1]
@@ -84,7 +87,7 @@ for iPFM in PFM:
 		Param.Profile_actP=a['actPower']
 		Param.Profile_actQ=a['reactPower']
 	toc=time.time()-tic
-	print('Ptorile simtime: ',toc)
+	#print('Ptorile simtime: ',toc)
 	###############################
 	folder_name= 'Results'
 	from PowerSystem.fobj import fobj
@@ -94,14 +97,22 @@ for iPFM in PFM:
 		pass
 
 	## voltage magnitude resuts for the best solution
-	Param.goal='(v-1)^2'
+	Param.goal='abs(v-v_ref)'
 	tic = time.time()
 	Param = fobj(Param)
 	toc=time.time()-tic
-	print('Elapsed time for the power flow: ',toc)
+	#print('Elapsed time for the power flow: ',toc)
 	SimTime.append(toc)
-	RD.Save_voltages_npy(os.path.join(FD,folder_name,"Voltages"),Param)
+	RD.Save_voltages_npy(os.path.join(FD,folder_name,"Voltages"+iPFM),Param)
+	for iprint in range(len(PFM)):
+		try:
+			a=SimTime[iprint]
+		except:
+			a='none'
+		print(PFM[iprint]+"   "+str(a)+" s")
+	atest=1
 DD = np.array([PFM, SimTime]).T  # Transpose the array to match columns
 # Save the data to a CSV file
 np.savetxt(os.path.join(FD,folder_name,"SimTimes.csv"), DD, delimiter=',', fmt='%s')
+np.shape(Param.Vmg)
 check_pint=1
