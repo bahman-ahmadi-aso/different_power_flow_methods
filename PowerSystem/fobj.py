@@ -76,13 +76,14 @@ def fobj(Param):
     ##############################################################
     #calculate the objective value(s)
     fit=[]
-    if Param.goal_value=='(v-1)^2':
+    if Param.goal=='(v-1)^2':
         for iSA in range(len(Param.Profile_actP)):
             fit.append(np.sum((Vmg[iSA]-1))**2)
     else:
         fit.append('None')
         print("NO OFs is selected")
 
-
-    return fit,Vmg,Param
+    Param.Vmg=Vmg
+    Param.goal_value=fit
+    return Param
 

@@ -41,3 +41,5 @@ class SOL:
         self.nLoad=0
 
         self.goal_value=[]
+        self.goal=[]
+        self.Vmg=[]

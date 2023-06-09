@@ -108,3 +108,7 @@ def Save_profiles_npy(name,Param):
     PARAM={'actPower':Param.Profile_actP,
                 'reactPower':Param.Profile_actQ}
     np.save(name+'.npy', PARAM)
+
+def Save_voltages_npy(name,Param):
+    PARAM={'goal_values':Param.goal_value,'Vmg':Param.Vmg}
+    np.save(name+'.npy', PARAM)

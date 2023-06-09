@@ -8,7 +8,7 @@ import sys,os,time,numpy as np,pandas as pd
 from datetime import datetime
 from PowerSystem.SOL import SOL 
 import data.ReadData as RD
-PFM=['Alliander','Laurent','tensor','hp','sequential','hp-tensor','fbs','nr','fdxb','gs','dc']
+PFM=['Alliander']#,'Laurent','tensor','hp','sequential','hp-tensor','fbs','nr','fdxb','gs','dc']
 SimTime=[]
 for iPFM in PFM:
 	Param=SOL()
@@ -94,13 +94,14 @@ for iPFM in PFM:
 		pass
 
 	## voltage magnitude resuts for the best solution
-	Param.OF_parts_save="yes"
+	Param.goal='(v-1)^2'
 	tic = time.time()
-	Fitout, Vmg,Param = fobj(Param)
+	Param = fobj(Param)
 	toc=time.time()-tic
 	print('Elapsed time for the power flow: ',toc)
 	SimTime.append(toc)
-	np.savetxt(os.path.join(FD,folder_name,"Vmg"+iPFM+".csv"), Vmg[0], delimiter=",")
+	RD.Save_voltages_npy(os.path.join(FD,folder_name,"Voltages"),Param)
 DD = np.array([PFM, SimTime]).T  # Transpose the array to match columns
 # Save the data to a CSV file
 np.savetxt(os.path.join(FD,folder_name,"SimTimes.csv"), DD, delimiter=',', fmt='%s')
+check_pint=1
