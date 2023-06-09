@@ -115,4 +115,8 @@ DD = np.array([PFM, SimTime]).T  # Transpose the array to match columns
 # Save the data to a CSV file
 np.savetxt(os.path.join(FD,folder_name,"SimTimes.csv"), DD, delimiter=',', fmt='%s')
 np.shape(Param.Vmg)
+
 check_pint=1
+
+import doGIT
+doGIT.doGIT("")	
