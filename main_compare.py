@@ -19,7 +19,7 @@ for iPFM in PFM:
 	Param.FD=FD
 
 
-	Param.day=range(1)#,362)
+	Param.day=range(1,362)
 	Param.TestSystem='Nodes_33'
 	Param.TestSystemLines='Lines_33'
 
@@ -65,19 +65,22 @@ for iPFM in PFM:
 
 	###############################
 	#read the time series data
-	Read_npy_data='no'
+	Read_npy_data='yes'
 	tic = time.time()
 	if Read_npy_data=='no':
 		Param=RD.read_act_react_DATA(Param)
-		save_Profiles='no'
+		save_Profiles='yes'
 		if save_Profiles=='yes':
-			RD.Save_profiles_npy("data/time_series/Profiles",Param)
+			RD.Save_profiles_npy("data/time_series/Profiles_info1",Param)
 	else:
 		a=Param.day
 		Param.day=[1]
 		Param=RD.read_act_react_DATA(Param)
 		Param.day=a
-		a=np.load('data/time_series/Profiles.npy',allow_pickle=True).item()
+		if Param.profile_info==0:
+			a=np.load('data/time_series/Profiles.npy',allow_pickle=True).item()
+		else:
+			a=np.load('data/time_series/Profiles_info1.npy',allow_pickle=True).item()
 		Param.Profile_actP=a['actPower']
 		Param.Profile_actQ=a['reactPower']
 	toc=time.time()-tic
@@ -98,4 +101,6 @@ for iPFM in PFM:
 	print('Elapsed time for the power flow: ',toc)
 	SimTime.append(toc)
 	np.savetxt(os.path.join(FD,folder_name,"Vmg"+iPFM+".csv"), Vmg[0], delimiter=",")
-np.savetxt(os.path.join(FD,folder_name,"SimTimes.csv"), SimTime, delimiter=",")
+DD = np.array([PFM, SimTime]).T  # Transpose the array to match columns
+# Save the data to a CSV file
+np.savetxt(os.path.join(FD,folder_name,"SimTimes.csv"), DD, delimiter=',', fmt='%s')
