@@ -12,9 +12,11 @@ import data.ReadData as RD
 
 Scenario="onePF"
 
+#############
 
-PFM=['nr','fbs','gs','fdxb','Laurent','Alliander','tensor']#['Alliander','Laurent','tensor','hp','sequential','hp-tensor','fbs','nr','fdxb','gs','dc']
+PFM=['nr','bfsw','gs','fdxb','Laurent','Alliander','tensor']#['Alliander','Laurent','tensor','hp','sequential','hp-tensor','fbs','nr','fdxb','gs','dc']
 SimTime=[]
+V_compare=[]
 for iPFM in PFM:
 	Param=SOL()
 
@@ -49,7 +51,7 @@ for iPFM in PFM:
 		Param.Ysd=Ysd
 		Param.Yds=Yds
 		Param.Ydd=Ydd
-	elif Param.PowerFlowMethod in ("fbs","nr",'fdxb','gs','dc'):  #'nr' for Newton-Raphson, 'fdxb' for Fast Decoupled with BX bus splitting, 'gs' for Gauss-Seidel, 'dc' for DC power flow, and 'fbs' for Backward/Forward Sweep
+	elif Param.PowerFlowMethod in ('bfsw',"fbs","nr",'fdxb','gs','dc'):  #'nr' for Newton-Raphson, 'fdxb' for Fast Decoupled with BX bus splitting, 'gs' for Gauss-Seidel, 'dc' for DC power flow, and 'fbs' for Backward/Forward Sweep
 		import pandapower as pp
 		from PowerSystem.create_net_data import create_pandapower_net
 		Param.profile_info=0
@@ -70,11 +72,11 @@ for iPFM in PFM:
 
 	###############################
 	#read the time series data
-	Read_npy_data='yes'
+	Read_npy_data='no'
 	tic = time.time()
 	if Read_npy_data=='no':
 		Param=RD.read_act_react_DATA(Param)
-		save_Profiles='yes'
+		save_Profiles='no'
 		if save_Profiles=='yes':
 			if Param.profile_info==0:
 				RD.Save_profiles_npy("data/time_series/Profiles",Param)
@@ -93,9 +95,9 @@ for iPFM in PFM:
 		Param.Profile_actQ=a['reactPower']
 	
 	
-	Param.Profile_actP=[[Param.Profile_actP[0][0]]]
-	Param.Profile_actQ=[[Param.Profile_actQ[0][0]]]
-	Param.nTime=1
+	#Param.Profile_actP=[[Param.Profile_actP[0][0]]]
+	#Param.Profile_actQ=[[Param.Profile_actQ[0][0]]]
+	#Param.nTime=1
 	toc=time.time()-tic
 	#print('Ptorile simtime: ',toc)
 	###############################
@@ -113,6 +115,7 @@ for iPFM in PFM:
 	toc=time.time()-tic
 	#print('Elapsed time for the power flow: ',toc)
 	SimTime.append(toc)
+	V_compare.append(Param.goal_value[0])
 	RD.Save_voltages_npy(os.path.join(FD,folder_name,"Voltages"+iPFM),Param)
 	for iprint in range(len(PFM)):
 		try:
@@ -121,10 +124,12 @@ for iPFM in PFM:
 			a='none'
 		print(PFM[iprint]+"   "+str(a)+" s")
 	atest=1
-DD = np.array([PFM, SimTime]).T  # Transpose the array to match columns
+DD = np.array([PFM, SimTime,V_compare]).T  # Transpose the array to match columns
 # Save the data to a CSV file
 np.savetxt(os.path.join(FD,folder_name,"SimTimes.csv"), DD, delimiter=',', fmt='%s')
 np.shape(Param.Vmg)
+
+RD.Plot_bars(os.path.join(FD,folder_name,"barplot"),Param,['NR','FBS','GS','FDM','LPF','APNR','TPF'], SimTime,V_compare)
 
 check_pint=1
 

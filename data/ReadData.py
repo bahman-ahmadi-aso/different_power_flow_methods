@@ -1,4 +1,4 @@
-import os,numpy as np,pandas as pd
+import os,numpy as np,pandas as pd, matplotlib.pyplot as plt
 from datetime import datetime
 def read_act_react_DATA(Param):
     for iiday in Param.day:
@@ -34,6 +34,9 @@ def read_act_react_DATA(Param):
             if Base_load_data=="yes":
                 scale=np.array([active_power_time_series[t][0] for t in range(len(active_power_time_series))])
                 scale=scale/np.max(scale)
+                scaleAll1='yes'
+                if scaleAll1=='yes':
+                    scale=np.add(np.multiply(scale,0),1)
                 ap=np.array([[scale[t] for n in range(len(maxP))] for t in range(len(active_power_time_series))])
                 aq=np.array([[scale[t] for n in range(len(maxP))] for t in range(len(active_power_time_series))])
                 P_profiles1=maxP*ap
@@ -112,3 +115,79 @@ def Save_profiles_npy(name,Param):
 def Save_voltages_npy(name,Param):
     PARAM={'goal_values':Param.goal_value,'Vmg':Param.Vmg}
     np.save(name+'.npy', PARAM)
+
+
+def Plot_bars(name,Param,PFM, SimTime,VOF):
+    # Figure Size
+    
+    x = np.arange(len(PFM))
+
+    # Create the figure and axes objects
+    fig, ax = plt.subplots()
+
+    # Create the bars for SimTime
+    ax.barh(x, SimTime, color='blue', label='SimTime')
+
+    # Create the bars for VOF
+    ax.barh(x, -np.array(VOF), color='red', label='VOF')
+
+    # Set the y-axis tick positions and labels
+    ax.set_yticks(x)
+    ax.set_yticklabels(PFM)
+
+    # Set the x-axis label
+    ax.set_xlabel('Time / Value')
+    max=np.max([np.max(SimTime),np.max(VOF)])
+    max=max*1.1
+    ax.set_xlim([-max,max ])
+
+    
+    # Write the rounded values in front of the bars
+    for i, (time, vof) in enumerate(zip(SimTime, VOF)):
+        ax.text(time+0.5, i, f'{round(time, 4)}', ha='left', va='center', color='black')
+        ax.text(-vof-0.5, i, f'{round(vof, 4)}', ha='right', va='center', color='black')
+        ax.text(0, i, f'{PFM[i]}', ha='right', va='center', color='black')
+    
+    # Show Plot
+    plt.savefig(name+'.png', bbox_inches='tight')
+    a=1
+
+
+
+def Plot_bars1(name,Param,PFM, SimTime,VOF):
+    # Figure Size
+    fig, ax = plt.subplots(figsize =(6, 6))
+    
+    # Horizontal Bar Plot
+    ax.barh(PFM, SimTime)
+    
+    # Remove axes splines
+    for s in ['top', 'bottom', 'left', 'right']:
+        ax.spines[s].set_visible(False)
+    
+    # Remove x, y Ticks
+    ax.xaxis.set_ticks_position('none')
+    ax.yaxis.set_ticks_position('none')
+    
+    # Add padding between axes and labels
+    ax.xaxis.set_tick_params(pad = 5)
+    ax.yaxis.set_tick_params(pad = 10)
+    
+    
+    # Show top values
+    ax.invert_yaxis()
+    
+    # Add annotation to bars
+    for i in ax.patches:
+        plt.text(i.get_width()+0.2, i.get_y()+0.5,
+                str(round((i.get_width()), 4)),
+                fontsize = 12, fontweight ='bold',
+                color ='grey')
+    
+    
+    plt.yticks(fontsize=12)
+    # Show Plot
+    plt.savefig(name+'.png', bbox_inches='tight')
+    a=1
+
+

@@ -28,7 +28,7 @@ def fobj(Param):
                 ViSA.append(abs(V_0))
                 Ss = np.conj(Param.Yss + Param.Ysd * V_0)  # Power at substation
             Vmg.append(ViSA)
-    elif Param.PowerFlowMethod in ("fbs","nr",'fdxb','gs','dc'):
+    elif Param.PowerFlowMethod in ('bfsw',"fbs","nr",'fdxb','gs','dc'):
         import pandapower as pp
         Vmg = []
         for iSA in range(len(Param.Profile_actP)):
@@ -37,7 +37,7 @@ def fobj(Param):
                 Param.network.load.p_mw=np.array(Param.Profile_actP[iSA][iT])/1000
                 Param.network.load.q_mw=np.array(Param.Profile_actQ[iSA][iT])/1000
 
-                pp.runpp(Param.network,method=Param.PowerFlowMethod)
+                pp.runpp(Param.network,algorithm=Param.PowerFlowMethod,init="flat")
                 #print(network.res_bus)
                 ViSA.append(np.array(Param.network.res_bus.vm_pu))
             Vmg.append(ViSA)
