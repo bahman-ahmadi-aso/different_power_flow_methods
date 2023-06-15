@@ -13,7 +13,7 @@ import data.ReadData as RD
 Scenario="onePF"#  "96PFs" , "onePF"
 #Test_System="141"
 
-for Test_System in ['33','141']:
+for Test_System in ['141','33']:
 	#############
 	if Test_System=='141':
 		PFM=['nr','bfsw','fdxb','Laurent','Alliander','tensor']#other methods: ['Alliander','Laurent','tensor','hp','sequential','hp-tensor','bfsw','nr','fdxb','gs','dc']
@@ -129,7 +129,7 @@ for Test_System in ['33','141']:
 		toc=time.time()-tic
 		#print('Elapsed time for the power flow: ',toc)
 		SimTime.append(toc)
-		V_compare.append(Param.goal_value[0])#/(Param.nLoad*Param.nTime))
+		V_compare.append(Param.goal_value[0]/(Param.nTime))
 		RD.Save_voltages_npy(os.path.join(FD,folder_name,"Voltages"+iPFM),Param)
 		for iprint in range(len(PFM)):
 			try:

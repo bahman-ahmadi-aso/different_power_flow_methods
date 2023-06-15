@@ -143,7 +143,7 @@ def Plot_bars(name,Param,PFM, SimTime,VOF):
         ax.text(-vof-max2, i, f'{round(vof, 4)}', ha='right', va='center', color='black')
         ax.text(0, i, f'{PFM[i]}', ha='right', va='center', color='black')
     
-    ax.text(0, -1, r'$\sum|v_{i,t}-1|$                            Time (s)', ha='center', va='center', color='black')
+    ax.text(0, -1, r'$\sum|v_{i,t}-1|\cdot \alpha$                            Time (s)', ha='center', va='center', color='black')
     
     # Show Plot
     plt.savefig(name+'.png', bbox_inches='tight')
