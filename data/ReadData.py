@@ -34,7 +34,7 @@ def read_act_react_DATA(Param):
             if Base_load_data=="yes":
                 scale=np.array([active_power_time_series[t][0] for t in range(len(active_power_time_series))])
                 scale=scale/np.max(scale)
-                scaleAll1='yes'
+                scaleAll1='no'
                 if scaleAll1=='yes':
                     scale=np.add(np.multiply(scale,0),1)
                 ap=np.array([[scale[t] for n in range(len(maxP))] for t in range(len(active_power_time_series))])

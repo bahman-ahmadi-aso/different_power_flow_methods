@@ -10,7 +10,7 @@ from PowerSystem.SOL import SOL
 import data.ReadData as RD
 
 
-Scenario="onePF"
+Scenario="96PFs"
 #Test_System="141"
 
 for Test_System in ['33','141']:
@@ -108,9 +108,10 @@ for Test_System in ['33','141']:
 			Param.Profile_actQ=a['reactPower']
 		
 		
-		Param.Profile_actP=[[Param.Profile_actP[0][0]]]
-		Param.Profile_actQ=[[Param.Profile_actQ[0][0]]]
-		Param.nTime=1
+		if Scenario=='onePF':
+			Param.Profile_actP=[[Param.Profile_actP[0][0]]]
+			Param.Profile_actQ=[[Param.Profile_actQ[0][0]]]
+			Param.nTime=1
 		toc=time.time()-tic
 		#print('Ptorile simtime: ',toc)
 		###############################
