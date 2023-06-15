@@ -41,9 +41,9 @@ for iPFM in PFM:
 	elif Param.TestSystem=='Nodes_34':
 		Param.Sbase = 1000  # kVA
 		Param.Vbase = 12.66  # kV
-	elif Param.TestSystem=='Nodes_55':
-		Param.Sbase = 1000  # kVA
-		Param.Vbase = 12.66  # kV
+	elif Param.TestSystem=='Nodes_150':
+		Param.Sbase = 400  # kVA
+		Param.Vbase = 0.4  # kV  maybe 20 kV
 	else:
 		print('Test system (S_base and V_base) is not defined!')
 	if Param.PowerFlowMethod=='Laurent':
