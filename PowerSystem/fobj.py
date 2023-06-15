@@ -50,8 +50,8 @@ def fobj(Param):
             load_profile = initialize_array("update", "sym_load", (Param.nTime, Param.nLoad))  
             load_profile["id"] = [Param.sysData["sym_load"]["id"]]
 
-            load_profile["p_specified"] = Param.Profile_actP[iSA]
-            load_profile["q_specified"] = Param.Profile_actQ[iSA]
+            load_profile["p_specified"] = np.multiply(Param.Profile_actP[iSA],1000)
+            load_profile["q_specified"] = np.multiply(Param.Profile_actQ[iSA],1000)
 
             time_series_mutation = {"sym_load": load_profile}
 
@@ -60,7 +60,7 @@ def fobj(Param):
                 threading=0,
                 symmetric=True,
                 error_tolerance=1e-8,
-                max_iterations=20,
+                max_iterations=10,
                 calculation_method=CalculationMethod.newton_raphson)
 
             

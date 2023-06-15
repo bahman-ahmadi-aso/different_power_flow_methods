@@ -118,16 +118,11 @@ def Save_voltages_npy(name,Param):
 
 
 def Plot_bars(name,Param,PFM, SimTime,VOF):
-    # Figure Size
-    
     x = np.arange(len(PFM))
 
-    # Create the figure and axes objects
     fig, ax = plt.subplots()
-
     # Create the bars for SimTime
     ax.barh(x, SimTime, color='blue', label='SimTime')
-
     # Create the bars for VOF
     ax.barh(x, -np.array(VOF), color='red', label='VOF')
 
@@ -136,17 +131,19 @@ def Plot_bars(name,Param,PFM, SimTime,VOF):
     ax.set_yticklabels(PFM)
 
     # Set the x-axis label
-    ax.set_xlabel('Time / Value')
+    ax.set_xlabel('Time                            Value')
     max=np.max([np.max(SimTime),np.max(VOF)])
     max=max*1.1
+    max2=max*0.15
     ax.set_xlim([-max,max ])
-
-    
+    ax.axis('off')
     # Write the rounded values in front of the bars
     for i, (time, vof) in enumerate(zip(SimTime, VOF)):
-        ax.text(time+0.5, i, f'{round(time, 4)}', ha='left', va='center', color='black')
-        ax.text(-vof-0.5, i, f'{round(vof, 4)}', ha='right', va='center', color='black')
+        ax.text(time+max2, i, f'{round(time, 4)}', ha='left', va='center', color='black')
+        ax.text(-vof-max2, i, f'{round(vof, 4)}', ha='right', va='center', color='black')
         ax.text(0, i, f'{PFM[i]}', ha='right', va='center', color='black')
+    
+    ax.text(0, -1, r'$\sum|v_{ij}-1|$                            Time (s)', ha='center', va='center', color='black')
     
     # Show Plot
     plt.savefig(name+'.png', bbox_inches='tight')

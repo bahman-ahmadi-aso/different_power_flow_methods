@@ -11,10 +11,10 @@ import data.ReadData as RD
 
 
 Scenario="onePF"
-
+Test_System="33"
 #############
 
-PFM=['nr','bfsw','gs','fdxb','Laurent','Alliander','tensor']#['Alliander','Laurent','tensor','hp','sequential','hp-tensor','fbs','nr','fdxb','gs','dc']
+PFM=['gs','nr','bfsw','fdxb','Laurent','Alliander','tensor']#['Alliander','Laurent','tensor','hp','sequential','hp-tensor','fbs','nr','fdxb','gs','dc']
 SimTime=[]
 V_compare=[]
 for iPFM in PFM:
@@ -27,8 +27,8 @@ for iPFM in PFM:
 
 
 	Param.day=range(1)#,362)
-	Param.TestSystem='Nodes_33'
-	Param.TestSystemLines='Lines_33'
+	Param.TestSystem='Nodes_'+Test_System
+	Param.TestSystemLines='Lines_'+Test_System
 
 	
 
@@ -36,6 +36,12 @@ for iPFM in PFM:
 
 	###############################
 	if Param.TestSystem=='Nodes_33':
+		Param.Sbase = 1000  # kVA
+		Param.Vbase = 12.66  # kV
+	elif Param.TestSystem=='Nodes_34':
+		Param.Sbase = 1000  # kVA
+		Param.Vbase = 12.66  # kV
+	elif Param.TestSystem=='Nodes_55':
 		Param.Sbase = 1000  # kVA
 		Param.Vbase = 12.66  # kV
 	else:
@@ -95,13 +101,13 @@ for iPFM in PFM:
 		Param.Profile_actQ=a['reactPower']
 	
 	
-	#Param.Profile_actP=[[Param.Profile_actP[0][0]]]
-	#Param.Profile_actQ=[[Param.Profile_actQ[0][0]]]
-	#Param.nTime=1
+	Param.Profile_actP=[[Param.Profile_actP[0][0]]]
+	Param.Profile_actQ=[[Param.Profile_actQ[0][0]]]
+	Param.nTime=1
 	toc=time.time()-tic
 	#print('Ptorile simtime: ',toc)
 	###############################
-	folder_name= os.path.join('Results',Scenario)
+	folder_name= os.path.join('Results',Param.TestSystem+'_'+Scenario)
 	from PowerSystem.fobj import fobj
 	try:
 		os.mkdir(os.path.join(FD,folder_name))
@@ -129,7 +135,7 @@ DD = np.array([PFM, SimTime,V_compare]).T  # Transpose the array to match column
 np.savetxt(os.path.join(FD,folder_name,"SimTimes.csv"), DD, delimiter=',', fmt='%s')
 np.shape(Param.Vmg)
 
-RD.Plot_bars(os.path.join(FD,folder_name,"barplot"),Param,['NR','FBS','GS','FDM','LPF','APNR','TPF'], SimTime,V_compare)
+RD.Plot_bars(os.path.join(FD,folder_name,"barplot"),Param,['GS','NR','FBS','FDM','LPF','APNR','TPF'], SimTime,V_compare)
 
 check_pint=1
 

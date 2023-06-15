@@ -76,19 +76,22 @@ def create_Alliander_net(branch_info_: pd.DataFrame, bus_info_: pd.DataFrame,Vba
     "source": source}
 
     model = PowerGridModel(input_data)
-    testmethod='no' #need to be corrected
+    testmethod='yes' #need to be corrected
     if testmethod=='yes':
         output_data = model.calculate_power_flow(
         #update_data=time_series_mutation,
         threading=0,
         symmetric=True,
         error_tolerance=1e-8,
-        max_iterations=20,
+        max_iterations=10,
         calculation_method=CalculationMethod.newton_raphson)
 
         n_BUS=33
         n_Time=1
-        Vm=[[output_data['node'][iT][ibus][2] for ibus in range(n_BUS)] for iT in range(n_Time)]
+        if n_Time==1:
+            Vm=[[output_data['node'][ibus][2] for ibus in range(n_BUS)] for iT in range(n_Time)]
+        else:
+            Vm=[[output_data['node'][iT][ibus][2] for ibus in range(n_BUS)] for iT in range(n_Time)]
 
     net=1
     return model,input_data
