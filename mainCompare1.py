@@ -11,7 +11,7 @@ import data.ReadData as RD
 
 
 Scenario="onePF"
-Test_System="150"
+Test_System="141"
 #############
 
 PFM=['nr','bfsw','Laurent']#['gs','nr','bfsw','fdxb','Laurent','Alliander','tensor']#other methods: ['Alliander','Laurent','tensor','hp','sequential','hp-tensor','bfsw','nr','fdxb','gs','dc']
@@ -44,6 +44,9 @@ for iPFM in PFM:
 	elif Param.TestSystem=='Nodes_150':
 		Param.Sbase = 400  # kVA
 		Param.Vbase = 20  # kV  maybe 20 kV
+	elif Param.TestSystem=='Nodes_141':
+		Param.Sbase = 10000  # kVA
+		Param.Vbase = 12.5  # kV  maybe 20 kV
 	else:
 		print('Test system (S_base and V_base) is not defined!')
 	if Param.PowerFlowMethod=='Laurent':
