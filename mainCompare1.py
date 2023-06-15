@@ -85,16 +85,16 @@ for Test_System in ['141','33']:
 
 		###############################
 		#read the time series data
-		Read_npy_data='yes'
+		Read_npy_data='no'
 		tic = time.time()
 		if Read_npy_data=='no':
 			Param=RD.read_act_react_DATA(Param)
-			save_Profiles='no'
+			save_Profiles='yes'
 			if save_Profiles=='yes':
 				if Param.profile_info==0:
-					RD.Save_profiles_npy("data/time_series/Profiles",Param)
+					RD.Save_profiles_npy("data/time_series/Profiles_141",Param)
 				else:
-					RD.Save_profiles_npy("data/time_series/Profiles_info1",Param)
+					RD.Save_profiles_npy("data/time_series/Profiles_info1_141",Param)
 		else:
 			a=Param.day
 			Param.day=[1]
