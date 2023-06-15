@@ -83,7 +83,7 @@ def create_Alliander_net(branch_info_: pd.DataFrame, bus_info_: pd.DataFrame,Vba
         threading=0,
         symmetric=True,
         error_tolerance=1e-8,
-        max_iterations=10,
+        max_iterations=20,
         calculation_method=CalculationMethod.newton_raphson)
 
         n_BUS=33
