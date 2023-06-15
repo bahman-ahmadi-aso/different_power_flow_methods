@@ -14,7 +14,7 @@ Scenario="onePF"
 Test_System="150"
 #############
 
-PFM=['bfsw','Laurent','Alliander','tensor']#['gs','nr','bfsw','fdxb','Laurent','Alliander','tensor']#other methods: ['Alliander','Laurent','tensor','hp','sequential','hp-tensor','bfsw','nr','fdxb','gs','dc']
+PFM=['nr','bfsw','Laurent']#['gs','nr','bfsw','fdxb','Laurent','Alliander','tensor']#other methods: ['Alliander','Laurent','tensor','hp','sequential','hp-tensor','bfsw','nr','fdxb','gs','dc']
 SimTime=[]
 V_compare=[]
 for iPFM in PFM:
@@ -135,7 +135,7 @@ DD = np.array([PFM, SimTime,V_compare]).T  # Transpose the array to match column
 np.savetxt(os.path.join(FD,folder_name,"SimTimes.csv"), DD, delimiter=',', fmt='%s')
 np.shape(Param.Vmg)
 
-RD.Plot_bars(os.path.join(FD,folder_name,"barplot"),Param,['FBS','LPF','APNR','TPF'], SimTime,V_compare)
+RD.Plot_bars(os.path.join(FD,folder_name,"barplot"),Param,['NR','FBS','LPF'], SimTime,V_compare)
 #RD.Plot_bars(os.path.join(FD,folder_name,"barplot"),Param,['GS','NR','FBS','FDM','LPF','APNR','TPF'], SimTime,V_compare)
 
 check_pint=1
