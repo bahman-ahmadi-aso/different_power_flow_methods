@@ -10,7 +10,7 @@ from PowerSystem.SOL import SOL
 import data.ReadData as RD
 
 
-Scenario="onePF"#  "96PFs" , "onePF"
+Scenario="96PFs"#  "96PFs" , "onePF"
 #Test_System="141"
 
 for Test_System in ['141','33']:
