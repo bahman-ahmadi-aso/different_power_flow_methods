@@ -14,6 +14,7 @@ NODES=net.bus.index.values
 Tb=net.bus.in_service
 Tb=Tb.astype(int)-1
 Tb=Tb.values
+Tb[0]=1
 PD=net.load.p_mw.values
 QD=net.load.q_mvar.values
 np.savetxt("Nodes_150.csv", ([NODES,Tb,PD,QD]), delimiter=",", fmt='%s')
