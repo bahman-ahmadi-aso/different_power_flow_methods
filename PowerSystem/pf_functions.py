@@ -36,7 +36,10 @@ def makeYbus(branch_info, bus_info, Sbase, Vbase):
     stat = branch_info.iloc[:, 5]  ## ones at in-service branches
     Ys = stat / ((branch_info.iloc[:, 2] + 1j * branch_info.iloc[:, 3]) / (Vbase ** 2 *1000/ Sbase))  ## series admittance
     Bc = stat * branch_info.iloc[:, 4] * (Vbase ** 2*1000 / Sbase)  ## line charging susceptance
-    tap = stat * branch_info.iloc[:, 6]  ## default tap ratio = 1
+    try:
+        tap = stat * branch_info.iloc[:, 6]  ## default tap ratio = 1
+    except:
+        tap = stat * 1
 
     Ytt = Ys + 1j * Bc / 2
     Yff = Ytt / (tap)
@@ -71,17 +74,11 @@ def makeYbus(branch_info, bus_info, Sbase, Vbase):
 
 
 def run_pf(System_Data_Nodes,PP,QQ, Sbase, Yds, Ydd, V_0):
-    """Transforms loads in p.u.
-    creates matrices (A, B, C, D) to solve the pf at the kth iteration
-    @author: Juan S. Giraldo (UTwente) jnse@ieee.org
-    """
     nb = System_Data_Nodes.shape[0]  ## number of buses
 
 
     P = PP / Sbase
     Q = QQ/ Sbase
-    #P = System_Data_Nodes[System_Data_Nodes.Tb != 1].PD.values / Sbase
-    #Q = System_Data_Nodes[System_Data_Nodes.Tb != 1].QD.values / Sbase
 
     S_nom = (P + 1j * Q).reshape(-1, ).tolist()
     alpha_P = System_Data_Nodes[System_Data_Nodes.Tb != 1].Pct.values.reshape(-1, ).tolist()
