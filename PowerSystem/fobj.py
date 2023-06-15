@@ -60,7 +60,7 @@ def fobj(Param):
                 threading=0,
                 symmetric=True,
                 error_tolerance=1e-8,
-                max_iterations=10,
+                max_iterations=20,
                 calculation_method=CalculationMethod.newton_raphson)
 
             

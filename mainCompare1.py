@@ -10,7 +10,7 @@ from PowerSystem.SOL import SOL
 import data.ReadData as RD
 
 
-Scenario="96PFs"
+Scenario="onePF"#  "96PFs" , "onePF"
 #Test_System="141"
 
 for Test_System in ['33','141']:
@@ -129,7 +129,7 @@ for Test_System in ['33','141']:
 		toc=time.time()-tic
 		#print('Elapsed time for the power flow: ',toc)
 		SimTime.append(toc)
-		V_compare.append(Param.goal_value[0])
+		V_compare.append(Param.goal_value[0])#/(Param.nLoad*Param.nTime))
 		RD.Save_voltages_npy(os.path.join(FD,folder_name,"Voltages"+iPFM),Param)
 		for iprint in range(len(PFM)):
 			try:
