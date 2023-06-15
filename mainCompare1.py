@@ -10,7 +10,7 @@ from PowerSystem.SOL import SOL
 import data.ReadData as RD
 
 
-Scenario="96PFs"#  "96PFs" , "onePF"
+Scenario="aYearPFs"#  "96PFs" , "onePF"
 #Test_System="141"
 
 for Test_System in ['141','33']:
@@ -30,7 +30,7 @@ for Test_System in ['141','33']:
 		Param.FD=FD
 
 
-		Param.day=range(1)#,362)
+		Param.day=range(1,362)
 		Param.TestSystem='Nodes_'+Test_System
 		Param.TestSystemLines='Lines_'+Test_System
 
@@ -85,7 +85,7 @@ for Test_System in ['141','33']:
 
 		###############################
 		#read the time series data
-		Read_npy_data='no'
+		Read_npy_data='yes'
 		tic = time.time()
 		if Read_npy_data=='no':
 			Param=RD.read_act_react_DATA(Param)
