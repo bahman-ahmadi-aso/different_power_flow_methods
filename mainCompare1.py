@@ -85,7 +85,7 @@ for Test_System in ['33']:
 
 		###############################
 		#read the time series data
-		Read_npy_data='yes'
+		Read_npy_data='no'
 		tic = time.time()
 		if Read_npy_data=='no':
 			Param=RD.read_act_react_DATA(Param)
