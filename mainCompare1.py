@@ -13,12 +13,12 @@ import data.ReadData as RD
 Scenario="aYearPFs"#  "96PFs" , "onePF"
 #Test_System="141"
 
-for Test_System in ['141','33']:
+for Test_System in ['33']:
 	#############
 	if Test_System=='141':
 		PFM=['nr','bfsw','fdxb','Laurent','Alliander','tensor']#other methods: ['Alliander','Laurent','tensor','hp','sequential','hp-tensor','bfsw','nr','fdxb','gs','dc']
 	else:
-		PFM=['gs','nr','bfsw','fdxb','Laurent','Alliander','tensor']
+		PFM=['nr','bfsw','fdxb','Laurent','Alliander','tensor']
 	SimTime=[]
 	V_compare=[]
 	for iPFM in PFM:
@@ -85,7 +85,7 @@ for Test_System in ['141','33']:
 
 		###############################
 		#read the time series data
-		Read_npy_data='no'
+		Read_npy_data='yes'
 		tic = time.time()
 		if Read_npy_data=='no':
 			Param=RD.read_act_react_DATA(Param)
@@ -146,7 +146,7 @@ for Test_System in ['141','33']:
 	if Test_System=='141':
 		RD.Plot_bars(os.path.join(FD,folder_name,"barplot"),Param,['NR','FBS','FDM','LPF','APNR','TPF'], SimTime,V_compare)
 	else:
-		RD.Plot_bars(os.path.join(FD,folder_name,"barplot"),Param,['GS','NR','FBS','FDM','LPF','APNR','TPF'], SimTime,V_compare)
+		RD.Plot_bars(os.path.join(FD,folder_name,"barplot"),Param,['NR','FBS','FDM','LPF','APNR','TPF'], SimTime,V_compare)
 
 	check_pint=1
 
