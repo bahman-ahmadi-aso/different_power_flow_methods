@@ -68,9 +68,24 @@ def fobj(Param):
             Vmg.append(np.array([[output_data['node'][iT][ibus][2] for ibus in range(Param.nLoad)] for iT in range(Param.nTime)]))
 
     else: ##tensor 
-        solutions = Param.network.run_pf(active_power=np.array(Param.Profile_actP),
+        if len(Param.Profile_actP)*Param.nTime>960000:
+            claster=1000
+            uotient, remainder = divmod(len(Param.Profile_actP),claster)
+            print(uotient, remainder)
+            Vmg=[]
+            for i in range(1,uotient+1):
+                print(i)
+                solutions = Param.network.run_pf(active_power=np.array(Param.Profile_actP[-1+(i*claster-(claster-1)):i*claster-1]),
+                        reactive_power=np.array(Param.Profile_actQ[-1+(i*claster-(claster-1)):i*claster-1]),algorithm=Param.PowerFlowMethod)
+                Vmg.append(abs(solutions["v"]))
+            if remainder>0:
+                solutions = Param.network.run_pf(active_power=np.array(Param.Profile_actP[-1+(uotient*claster-(claster-1)):len(Param.Profile_actP)]),
+                        reactive_power=np.array(Param.Profile_actQ[-1+(uotient*claster-(claster-1)):len(Param.Profile_actP)]),algorithm=Param.PowerFlowMethod)
+                Vmg.append(abs(solutions["v"]))
+        else:
+            solutions = Param.network.run_pf(active_power=np.array(Param.Profile_actP),
                         reactive_power=np.array(Param.Profile_actQ),algorithm=Param.PowerFlowMethod)
-        Vmg=abs(solutions["v"])
+            Vmg=abs(solutions["v"])
     
 
     ##############################################################
