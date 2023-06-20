@@ -11,6 +11,7 @@ def fobj(Param):
         nb = Param.System_Data_Nodes.shape[0]
         Vmg = []
         for iSA in range(len(Param.Profile_actP)):
+            print(Param.PowerFlowMethod+' '+str(iSA))
             ViSA=[]
             for iT in range(Param.nTime):
                 V_0 = np.ones((nb - 1)) + 1j * np.zeros((nb - 1))  # Flat start
@@ -32,6 +33,7 @@ def fobj(Param):
         import pandapower as pp
         Vmg = []
         for iSA in range(len(Param.Profile_actP)):
+            print(Param.PowerFlowMethod+' '+str(iSA))
             ViSA=[]
             for iT in range(Param.nTime):
                 Param.network.load.p_mw=np.array(Param.Profile_actP[iSA][iT])/1000
@@ -47,6 +49,7 @@ def fobj(Param):
         from power_grid_model import initialize_array
         Vmg = []
         for iSA in range(len(Param.Profile_actP)):
+            print(Param.PowerFlowMethod+' '+str(iSA))
             load_profile = initialize_array("update", "sym_load", (Param.nTime, Param.nLoad))  
             load_profile["id"] = [Param.sysData["sym_load"]["id"]]
 
@@ -78,7 +81,9 @@ def fobj(Param):
                 solutions = Param.network.run_pf(active_power=np.array(Param.Profile_actP[-1+(i*claster-(claster-1)):i*claster-1]),
                         reactive_power=np.array(Param.Profile_actQ[-1+(i*claster-(claster-1)):i*claster-1]),algorithm=Param.PowerFlowMethod)
                 Vmg.append(abs(solutions["v"]))
+                a=1
             if remainder>0:
+                print('last')
                 solutions = Param.network.run_pf(active_power=np.array(Param.Profile_actP[-1+(uotient*claster-(claster-1)):len(Param.Profile_actP)]),
                         reactive_power=np.array(Param.Profile_actQ[-1+(uotient*claster-(claster-1)):len(Param.Profile_actP)]),algorithm=Param.PowerFlowMethod)
                 Vmg.append(abs(solutions["v"]))

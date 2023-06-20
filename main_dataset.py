@@ -19,7 +19,7 @@ for Test_System in ['33']:
 		PFM=['nr','bfsw','fdxb','Laurent','Alliander','tensor']#other methods: ['Alliander','Laurent','tensor','hp','sequential','hp-tensor','bfsw','nr','fdxb','gs','dc']		
 	else:
 		PFM=['nr','bfsw','fdxb','Laurent','Alliander','tensor']
-	PFM=['tensor']
+	#PFM=['tensor','Alliander']
 	SimTime=[]
 	V_compare=[]
 	for iPFM in PFM:
@@ -114,8 +114,8 @@ for Test_System in ['33']:
 			Param.Profile_actQ=[[Param.Profile_actQ[0][0]]]
 			Param.nTime=1
 		elif Scenario=='DatasetPFs':
-			Param.Profile_actP=Param.Profile_actP*1000000
-			Param.Profile_actQ=Param.Profile_actQ*1000000
+			Param.Profile_actP=Param.Profile_actP*1000#104167
+			Param.Profile_actQ=Param.Profile_actQ*1000#104167
 		toc=time.time()-tic
 		#print('Ptorile simtime: ',toc)
 		###############################
@@ -127,13 +127,13 @@ for Test_System in ['33']:
 			pass
 
 		## voltage magnitude resuts for the best solution
-		Param.goal='abs(v-v_ref)'
+		Param.goal='abs(v-v_ref)1'
 		tic = time.time()
 		Param = fobj(Param)
 		toc=time.time()-tic
 		#print('Elapsed time for the power flow: ',toc)
 		SimTime.append(toc)
-		V_compare.append(Param.goal_value[0]/(Param.nTime))
+		
 		RD.Save_voltages_npy(os.path.join(FD,folder_name,"Voltages"+iPFM),Param)
 		for iprint in range(len(PFM)):
 			try:
@@ -142,15 +142,15 @@ for Test_System in ['33']:
 				a='none'
 			print(PFM[iprint]+"   "+str(a)+" s")
 		atest=1
-	DD = np.array([PFM, SimTime,V_compare]).T  # Transpose the array to match columns
+	DD = np.array([PFM, SimTime]).T  # Transpose the array to match columns
 	# Save the data to a CSV file
 	np.savetxt(os.path.join(FD,folder_name,"SimTimes.csv"), DD, delimiter=',', fmt='%s')
 	np.shape(Param.Vmg)
 
 	if Test_System=='141':
-		RD.Plot_bars(os.path.join(FD,folder_name,"barplot"),Param,['NR','FBS','FDM','LPF','APNR','TPF'], SimTime,V_compare)
+		RD.Plot_bars(os.path.join(FD,folder_name,"barplot"),Param,['NR','FBS','FDM','LPF','APNR','TPF'], SimTime,[])
 	else:
-		RD.Plot_bars(os.path.join(FD,folder_name,"barplot"),Param,['NR','FBS','FDM','LPF','APNR','TPF'], SimTime,V_compare)
+		RD.Plot_bars(os.path.join(FD,folder_name,"barplot"),Param,['NR','FBS','FDM','LPF','APNR','TPF'], SimTime,[])
 
 	check_pint=1
 
