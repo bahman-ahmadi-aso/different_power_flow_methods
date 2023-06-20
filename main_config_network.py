@@ -26,7 +26,7 @@ for Test_System in ['33','141']:
 	for iPFM in PFM:
 		
 		tic1 = time.time()
-		for iq in range(2):
+		for iq in range(100):
 			Param=SOL()
 
 			FD=os.getcwd()
